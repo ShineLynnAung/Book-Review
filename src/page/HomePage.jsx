@@ -1,62 +1,45 @@
 import {
   Avatar,
   Button,
+  FormControl,
   IconButton,
   InputBase,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   ThemeProvider,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import theme from "../theme";
 import { Search } from "@mui/icons-material";
+import { booksData } from "../constants/configData";
+import { GetBusinessTypeAPI } from "../api/HomeController";
 
 export default function HomePage({ history }) {
   const [loading, setLoading] = useState();
+  const [data,setData]=useState([]);
+  const [chooseBusinessType, setChooseBusinessType] = useState("");
+  const handleChooseBusinessType = (event) => {
+    setChooseBusinessType(event.target.value);
+  };
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setTimeout(() => {      
+      getBusinessList();
     }, 1000);
+
+    const getBusinessList=async()=>{
+      const data=await GetBusinessTypeAPI();
+      console.log("Data",data);
+      setData(data.business_types);
+      setLoading(false);
+    }
+
   }, []);
 
-  const books = [
-    {'id': 1,
-      'name':"Meditatons",
-      'author': "Marcus Aurelius",
-      'path':"https://www.classicwisdomcollection.com/cdn/shop/files/MeditationsebookCover.png?v=1693420596"
-    },
-    {
-      'id':2,
-      'name':"Next Level Thinking",
-      'author': "Joel Osteen",
-      'path':"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeP_-_xN6FsKG-d2wgp9iC0FAiWdTMhClrqw&s"
-    },
-    {
-      'id':3,
-      'name':"Can't Hurt Me",
-      'author': "David Goggins",
-      'path':"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcur2ZJId-3s1VR7d5NPykhjQKjNuS-38_ngtL253VSIoS7HuC3pYayqlevxjq4we09EU&usqp=CAU"
-    },
-    {
-      'id':4,
-      'name':"Old Man and The Sea",
-      'author': "Ernest Hemingway",
-      'path':"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHPw_KbLuOuo9ed8davzLAw0MO5w44lifjyQ&s"
-    },
-    {
-      id: 5,
-      name: "Atomic Habits",
-      author: "James Clear",
-      path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIjgtcNpeP-ceE7uzpqCiftbYv_1a47s3B1A&s",
-    },
-    {
-      id: 6,
-      name: "The 48 Laws of Power",
-      author: "Robert Greene",
-      path: "https://img.drz.lazcdn.com/static/mm/p/07bdf9ce6a18b46a90f7eb0a9e92fd32.jpg_720x720q80.jpg_.webp",
-    },
-  ]
+
   return (
     <>
       {loading ? (
@@ -151,7 +134,7 @@ export default function HomePage({ history }) {
   </div>
 
   <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mx-3 mb-3">
-    {books.map((book) => (
+    {booksData.map((book) => (
       <div key={book.id} className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg">
         <img src={book.path} alt={book.name} className="w-full h-80 object-cover" />
         <div className="p-4">
@@ -161,6 +144,21 @@ export default function HomePage({ history }) {
       </div>
     ))}
   </div>
+  {/* Business Type List */}
+  <FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">Business Types</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={chooseBusinessType}
+    label="Choose Business"
+    onChange={(e)=>setChooseBusinessType(e.target.value)}
+  >
+    {data?.map((item,index)=>(
+      <MenuItem key={index} value={item.type}>{item.type}</MenuItem>
+    ))}
+  </Select>
+</FormControl>
 </div>
 
 </div>
