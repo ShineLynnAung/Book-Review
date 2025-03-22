@@ -5,6 +5,7 @@ import HomePage from './page/HomePage';
 import RegisterPage from './page/auth/RegisterPage';
 import NotFound from './page/NotFoundPage';
 import Forgot from './page/auth/ForgotPage';
+import AdditionPage from './page/common/AdditionPage';
 
 function App(){
   return(
@@ -15,6 +16,7 @@ function App(){
           <Route exact path="/register" component={RegisterPage}/>
           <Route exact path="/home" component={HomePage}/>
           <Route exact path="/forgot" component={Forgot}/>
+          <Route exact path="/addition" component={AdditionPage}/>
           <Route exact path="*" component={NotFound}/>
         </Switch>
       </Router>

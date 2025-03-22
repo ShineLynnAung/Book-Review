@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import theme from "../../theme";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { LoginApi } from "../../api/AuthController";
+import DefaultBtnComponent from "../../components/Button/DefaultBtnComponent";
 
 export default function LoginPage({ history }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -104,7 +105,7 @@ export default function LoginPage({ history }) {
               </div>
               <ThemeProvider theme={theme}>
                 <div className="flex justify-center mt-6">
-                  <Button
+                  {/* <Button
                     variant="contained"
                     color="secondary"
                     className="w-[60%] "
@@ -112,7 +113,16 @@ export default function LoginPage({ history }) {
                     onClick={()=> handleLogin()}
                   >
                     Login
-                  </Button>
+                  </Button> */}
+                  <DefaultBtnComponent
+                    className={"w-[60%]"}
+                    style={{ borderRadius: "999px", padding: "10px" }}
+                    variant={"contained"}
+                    color={"secondary"}
+                    onClick={handleLogin}
+                    label={"Login"}
+                    disabled={false}
+                  />
                 </div>
               </ThemeProvider>
 
